@@ -21,7 +21,7 @@ export function setCameraTarget(targetPosition: BABYLON.Vector3[]) {
   camera.setTarget(
     new BABYLON.Vector3(
       targetPosition[0].x,
-      targetPosition[0].y + 1,
+      targetPosition[0].y + 0.25,
       targetPosition[0].z
     )
   );
