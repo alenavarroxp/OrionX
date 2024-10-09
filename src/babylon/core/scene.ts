@@ -9,7 +9,7 @@ export function setScene(engine: BABYLON.Engine) {
   scene = new BABYLON.Scene(engine);
   scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
 
-  setCamera(scene,engine);
+  setCamera(scene);
   setLight(scene);
   setAssistant(scene);
 

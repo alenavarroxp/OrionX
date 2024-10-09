@@ -2,7 +2,7 @@ import * as BABYLON from "@babylonjs/core";
 
 let camera: BABYLON.ArcRotateCamera;
 
-export function setCamera(scene: BABYLON.Scene, engine: BABYLON.Engine) {
+export function setCamera(scene: BABYLON.Scene) {
   camera = new BABYLON.ArcRotateCamera(
     "camera",
     -Math.PI / 2,
