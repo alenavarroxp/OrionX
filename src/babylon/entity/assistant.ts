@@ -5,7 +5,6 @@ import { setCameraTarget } from "../core/camera";
 let assistant: BABYLON.AbstractMesh | null = null;
 let animationGroups: BABYLON.AnimationGroup[] = [];
 let idleAnimation: BABYLON.AnimationGroup | null = null;
-let welcomeAnimation: BABYLON.AnimationGroup | null = null;
 
 // Cargar las animaciones del asistente
 export function setAssistant(scene: BABYLON.Scene) {
@@ -44,6 +43,10 @@ export function setAssistant(scene: BABYLON.Scene) {
   );
 }
 
+export function getAssistant() {
+  return assistant;
+}
+
 // Función para escalar el asistente
 function assistantScale() {
   if (assistant) {
@@ -60,8 +63,6 @@ function loadAssistantAnimations(
   // Buscar y guardar las animaciones específicas
   idleAnimation =
     animationGroups.find((group) => group.name === "Character|IDLE") || null;
-  welcomeAnimation =
-    animationGroups.find((group) => group.name === "Character|WELCOME") || null;
 }
 
 // Función para reproducir una animación una vez
@@ -99,5 +100,29 @@ function setIdleAnimation() {
     idleAnimation.play(true); // true para que se repita en bucle
   } else {
     console.error("Idle animation not found.");
+  }
+}
+
+export function setAnimation(name: string) {
+  console.log(animationGroups);
+  const animation = animationGroups.find((group) => group.name === name);
+
+  stopAnimation();
+
+  if (animation) {
+    animation.play(false); // Reproduce la animación especificada
+
+    // Una vez que la animación ha terminado, inicia la animación idle
+    animation.onAnimationEndObservable.addOnce(() => {
+      // Reproducir la animación de idle
+      if (idleAnimation) {
+        idleAnimation.reset();
+        idleAnimation.play(true); // true para que se repita en bucle
+      } else {
+        console.error("Idle animation not found.");
+      }
+    });
+  } else {
+    console.error(`Animation ${name} not found.`);
   }
 }

@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@babylonjs/core": "^7.28.0",
+    "@babylonjs/gui": "^7.28.0",
     "@eslint/js": "^9.11.1",
     "@types/node": "^22.7.5",
     "@types/react": "^18.3.10",
