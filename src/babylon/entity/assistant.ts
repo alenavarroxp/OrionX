@@ -91,6 +91,7 @@ function playAnimationOnce(animationName: string, onComplete: () => void) {
 // Función para pausar cualquier animación actual
 export function stopAnimation() {
   animationGroups.forEach((group) => group.pause());
+  idleAnimation?.pause();
 }
 
 // Función para establecer la animación "IDLE"

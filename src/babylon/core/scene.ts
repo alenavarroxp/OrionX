@@ -1,5 +1,6 @@
 import * as BABYLON from "@babylonjs/core";
 import { setAssistant } from "../entity/assistant";
+import { setGUI } from "../interface/gui";
 import { setCamera } from "./camera";
 import { setLight } from "./light";
 
@@ -12,6 +13,7 @@ export function setScene(engine: BABYLON.Engine) {
   setCamera(scene);
   setLight(scene);
   setAssistant(scene);
+  setGUI(scene);
 
   engine.runRenderLoop(() => {
     scene.render();

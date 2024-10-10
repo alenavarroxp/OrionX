@@ -1,6 +1,7 @@
 import { Send } from "lucide-react";
 import { useState } from "react";
 import { setAnimation } from "../babylon/entity/assistant";
+import { destroyTalkDots, setTalkDots } from "../babylon/interface/elements";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -10,8 +11,14 @@ export default function ChatInput() {
   const handleSend = () => {
     if (value.trim() !== "") {
       console.log("Mensaje enviado:", value);
+
       setValue("");
-      setAnimation("Character|Audio_2");
+      setTalkDots();
+      setTimeout(() => {
+        setAnimation("Character|Audio_2");
+        destroyTalkDots();
+
+      }, 10000);
     }
   };
 

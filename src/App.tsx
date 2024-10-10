@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { getEngine, setEngine } from "./babylon/core/engine";
 import ChatInput from "./components/ChatInput";
-import OrionXTitle from "./components/OrionXTitle";
+import OrionXChat from "./components/orionX/OrionXChat";
+import OrionXTitle from "./components/orionX/OrionXTitle";
 
 function App() {
   useEffect(() => {
@@ -14,14 +15,14 @@ function App() {
 
   return (
     <div className="bg-gray-800 w-screen h-screen flex flex-col overflow-hidden">
-      <div className="z-10 w-full bg-gray-800 bg-opacity-40">
-        <OrionXTitle />
-      </div>
-
       <canvas
         id="canvas"
-        className="absolute bg-gray-800 inset-0 w-full h-full pointer-events-none"
+        className="z-0 absolute bg-gray-800 inset-0 w-full h-full pointer-events-none"
       />
+      <div className=" relative z-20 w-1/3 h-full bg-gray-800 bg-opacity-40">
+        <OrionXTitle />
+        <OrionXChat />
+      </div>
 
       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gray-800">
         <div className="flex space-x-2 w-1/3 mx-auto">
