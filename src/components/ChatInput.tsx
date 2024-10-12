@@ -1,7 +1,8 @@
 import { useAtom } from "jotai";
-import { Send } from "lucide-react";
+import { Send, UploadIcon } from "lucide-react";
 import { useState } from "react";
-import { Message, messagesAtom } from "../atoms/chatAtom";
+import { geminiAPI } from "../api/gemini";
+import { Message, messagesAtom } from "../atoms/messageAtom";
 import { setAnimation } from "../babylon/entity/assistant";
 import { destroyTalkDots, setTalkDots } from "../babylon/interface/elements";
 import { orionXTalk } from "./orionX/utils/OrionX";
@@ -11,38 +12,54 @@ import { Input } from "./ui/input";
 export default function ChatInput() {
   const [value, setValue] = useState("");
   const [messages, setMessages] = useAtom(messagesAtom);
+  const [fileContent, setFileContent] = useState<string | null>(null);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (value.trim() !== "") {
       console.log("Mensaje enviado:", value);
+      await sendMessage(value);
+    }
+  };
 
-      setValue(""); // Limpiar el input
-      setTalkDots(); // Mostrar los puntos animados de typing
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const text = await file.text();
+      console.log("Contenido del archivo:", text);
+      setFileContent(text);
+    }
+  };
+
+  const sendMessage = async (input: string) => {
+    setValue("");
+    setTalkDots();
+
+    const prompt = fileContent ? `${input}\n\nAquí está el contenido del archivo:\n${fileContent}` : input;
+
+    try {
+      const response = await geminiAPI(prompt);
+      setAnimation("Character|Audio_2");
+      destroyTalkDots();
+
+      const newMessage: Message = {
+        id: messages.length + 1,
+        text: response,
+        sender: "OrionX",
+        replyTo: input,
+        date: new Date(),
+        isTyping: true,
+      };
+
       setTimeout(() => {
-        setAnimation("Character|Audio_2"); // Iniciar animación del personaje
-        destroyTalkDots(); // Eliminar los puntos animados
-
-        const newMessage: Message = {
-          id: messages.length + 1, // Asegurarse que el id sea único
-          text: value, // Texto enviado por el usuario
-          sender: "user", // El remitente es el usuario
-          replyTo: undefined,
-          date: new Date(),
-          isTyping: true, // Empezar el typing effect
-        };
-
-        // Agregar el mensaje vacío (para el efecto typing)
         setMessages((prevMessages) => [
           ...prevMessages,
-          { ...newMessage, text: "" } // Texto vacío para comenzar el typing
+          { ...newMessage, text: "" }
         ]);
-
-        // Iniciar el efecto de typing usando orionXTalk
-        setTimeout(() => {
-          orionXTalk(newMessage, setMessages); // Ejecutar el typing effect
-        }, 2000); // Simular un pequeño retraso antes de iniciar typing
-
-      }, 2000); // Retraso para sincronizar con la animación del personaje
+        orionXTalk(newMessage, setMessages);
+      }, 500);
+    } catch (error) {
+      console.error("Error al obtener la respuesta de Gemini:", error);
+      destroyTalkDots();
     }
   };
 
@@ -62,6 +79,20 @@ export default function ChatInput() {
       >
         <Send className="h-4 w-4" />
       </Button>
+
+      {/* Input de archivo oculto */}
+      <input
+        type="file"
+        accept=".txt,.md" // Tipos de archivo permitidos
+        onChange={handleFileUpload}
+        className="hidden"
+        id="file-upload"
+      />
+
+      {/* Botón personalizado para cargar archivos */}
+      <label htmlFor="file-upload" className="ml-2 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl flex items-center">
+        <UploadIcon className="h-4 w-4" />
+      </label>
     </>
   );
 }

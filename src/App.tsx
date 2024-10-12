@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { setGeminiAPI } from "./api/gemini";
 import { getEngine, setEngine } from "./babylon/core/engine";
 import ChatInput from "./components/ChatInput";
 import OrionXChat from "./components/orionX/OrionXChat";
@@ -6,6 +7,7 @@ import OrionXTitle from "./components/orionX/OrionXTitle";
 
 function App() {
   useEffect(() => {
+    setGeminiAPI()
     const canvas = document.getElementById("canvas");
     const engine = getEngine();
     if (canvas && !engine) {

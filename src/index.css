@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* styles.css o un archivo CSS donde incluyas tus estilos */
+.scrollbar {
+  scrollbar-width: thin; /* Para Firefox */
+  scrollbar-color: #c4c4c4 #1f2937; /* thumb color y track color */
+  scroll-behavior: smooth;;
+}

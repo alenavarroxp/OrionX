@@ -1,4 +1,4 @@
-import { Message } from "../../../atoms/chatAtom";
+import { Message } from "@/atoms/messageAtom";
 
 export function orionXTalk(
   message: Message,

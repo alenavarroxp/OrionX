@@ -1,10 +1,18 @@
-import { Message, messagesAtom } from "@/atoms/chatAtom";
+import { Message, messagesAtom } from "@/atoms/messageAtom";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { orionXTalk } from "./utils/OrionX";
 
 export default function OrionXChat() {
   const [messages, setMessages] = useAtom(messagesAtom);
+
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   useEffect(() => {
     const initialMessage: Message = {
@@ -13,17 +21,15 @@ export default function OrionXChat() {
       sender: "OrionX",
       replyTo: undefined,
       date: new Date(),
-      isTyping: true, // Comienza el typing
+      isTyping: true,
     };
 
-    // Primero agrega el mensaje con texto vacío
-    setMessages([{
-      ...initialMessage,
-      text: "", // Texto vacío inicialmente para hacer el efecto typing
-    }]);
-
-    // Luego, inicia el efecto typing después de 3 segundos
     setTimeout(() => {
+      setMessages([{
+        ...initialMessage,
+        text: "",
+      }]);
+
       orionXTalk(initialMessage, setMessages);
     }, 3000);
   }, [setMessages]);
@@ -33,17 +39,19 @@ export default function OrionXChat() {
   };
 
   return (
-    <div className="text-white  px-4 rounded-lg w-full h-full text-lg font-semibold">
-
+    <div
+      ref={chatContainerRef}
+      className="text-white px-4 rounded-lg w-full h-full text-lg font-semibold overflow-y-auto"
+      style={{ maxHeight: "80vh" }}
+    >
       {messages.map((msg) => (
-
         <div key={msg.id} className="mb-2">
+          {msg.replyTo && <div className="text-xs text-gray-400">Replying to: {msg.replyTo}</div>}
           <div className="text-xs text-gray-400 flex justify-between items-center">
             <p className="text-sm font-bold bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">{msg.sender}</p>
             <p>{formatTime(msg.date)}</p>
           </div>
-
-          <span>{msg.text}</span>
+          <span className="text-base text-justify">{msg.text}</span>
         </div>
       ))}
     </div>
