@@ -105,7 +105,6 @@ function setIdleAnimation() {
 }
 
 export function setAnimation(name: string) {
-  console.log(animationGroups);
   const animation = animationGroups.find((group) => group.name === name);
 
   stopAnimation();

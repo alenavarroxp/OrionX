@@ -5,7 +5,7 @@ export function orionXTalk(
   setMessages: (updater: (prev: Message[]) => Message[]) => void
 ) {
   let i = 0;
-  const speed = 7.5;
+  const speed = 0.5;
 
   const typingEffect = setInterval(() => {
     const newText = message.text.slice(0, i + 1);

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { setGeminiAPI } from "./api/gemini";
 import { getEngine, setEngine } from "./babylon/core/engine";
-import ChatInput from "./components/ChatInput";
+import ChatInput from "./components/input/ChatInput";
 import OrionXChat from "./components/orionX/OrionXChat";
 import OrionXTitle from "./components/orionX/OrionXTitle";
 
@@ -16,18 +16,18 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-gray-800 w-screen h-screen flex flex-col overflow-hidden">
-      <canvas
-        id="canvas"
-        className="z-0 absolute bg-gray-800 inset-0 w-full h-full pointer-events-none"
-      />
-      <div className=" relative z-20 w-1/3 h-full bg-gray-800 bg-opacity-40">
-        <OrionXTitle />
-        <OrionXChat />
+    <div className="bg-gray-800 w-screen h-screen flex flex-col overflow-hidden font-onest">
+     
+      <div className="scrollbar relative w-full h-full bg-gray-800 bg-opacity-40 flex">
+        <div className="flex flex-col justify-between h-full w-2/3 ">
+          <OrionXTitle />
+          <OrionXChat />
+        </div>
+        <canvas id="canvas" className="w-1/3 h-full bg-gray-800 pointer-events-none"></canvas>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gray-800">
-        <div className="flex space-x-2 w-1/3 mx-auto">
+      <div className="z-10 w- p-4 bg-gray-800">
+        <div className="flex space-x-2 w-2/3">
           <ChatInput />
         </div>
       </div>

@@ -1,13 +1,13 @@
 import { useAtom } from "jotai";
 import { Send, UploadIcon } from "lucide-react";
 import { useState } from "react";
-import { geminiAPI } from "../api/gemini";
-import { Message, messagesAtom } from "../atoms/messageAtom";
-import { setAnimation } from "../babylon/entity/assistant";
-import { destroyTalkDots, setTalkDots } from "../babylon/interface/elements";
-import { orionXTalk } from "./orionX/utils/OrionX";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { geminiAPI } from "@/api/gemini";
+import { Message, messagesAtom } from "@/atoms/messageAtom";
+import { setAnimation } from "@/babylon/entity/assistant";
+import { destroyTalkDots, setTalkDots } from "@/babylon/interface/elements";
+import { orionXTalk } from "../orionX/utils/OrionX";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 export default function ChatInput() {
   const [value, setValue] = useState("");
@@ -16,7 +16,6 @@ export default function ChatInput() {
 
   const handleSend = async () => {
     if (value.trim() !== "") {
-      console.log("Mensaje enviado:", value);
       await sendMessage(value);
     }
   };
@@ -25,7 +24,6 @@ export default function ChatInput() {
     const file = event.target.files?.[0];
     if (file) {
       const text = await file.text();
-      console.log("Contenido del archivo:", text);
       setFileContent(text);
     }
   };
@@ -64,13 +62,14 @@ export default function ChatInput() {
   };
 
   return (
-    <>
+    <div className="flex items-center space-x-2 w-full bg-gray-700 p-1 rounded-xl">
       <Input
         type="text"
-        placeholder="Escribe tu mensaje..."
+        placeholder="Write a message..."
+        
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="flex-grow bg-gray-700 text-white border-gray-600 py-6 rounded-xl"
+        className="flex-grow text-white border-0 placeholder:text-muted-foreground focus-visible:ring-offset-0 focus-visible:ring-0"
       />
       <Button
         onClick={handleSend}
@@ -93,6 +92,6 @@ export default function ChatInput() {
       <label htmlFor="file-upload" className="ml-2 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl flex items-center">
         <UploadIcon className="h-4 w-4" />
       </label>
-    </>
+    </div>
   );
 }

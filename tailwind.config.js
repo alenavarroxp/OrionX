@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
   	extend: {
+      fontFamily: {
+        'onest': ['Onest Variable', 'system-ui', 'serif'],
+      },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

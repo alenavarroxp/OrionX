@@ -1,10 +1,171 @@
+@import '@fontsource-variable/onest';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* styles.css o un archivo CSS donde incluyas tus estilos */
 .scrollbar {
-  scrollbar-width: thin; /* Para Firefox */
-  scrollbar-color: #c4c4c4 #1f2937; /* thumb color y track color */
-  scroll-behavior: smooth;;
+  scrollbar-width: thin;
+  scrollbar-color: #c4c4c4 #1f2937;
+  scroll-behavior: smooth;
+  overflow-y: auto;
 }
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #c4c4c4;
+  border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background-color: #1f2937;
+}
+
+.markdown-container {
+  padding:2px;
+  padding-right: 20px;
+  color: #d1d5db; /* Texto suave */
+  font-family: 'Onest Variable', system-ui, sans-serif;
+  border-radius: 8px;
+}
+
+.markdown-container h1, 
+.markdown-container h2, 
+.markdown-container h3 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 1.2em;
+  color: #cdd2da; /* Color gris claro para encabezados */
+}
+
+.markdown-container h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+}
+
+.markdown-container h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5em;
+}
+
+.markdown-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5em;
+}
+
+.markdown-container h4 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5em;
+}
+
+.markdown-container h5 {
+  font-size: 1rem;
+  margin-bottom: 0.5em;
+}
+
+.markdown-container h6 {
+  font-size: 0.875rem;
+  margin-bottom: 0.5em;
+}
+
+.markdown-container p {
+  margin-bottom: 1.2em;
+  color: #fff; /* Texto principal en un gris más claro */
+}
+
+.markdown-container strong {
+  font-weight: 700;
+  color: #f3f4f6; /* Negrita un poco más clara */
+}
+
+.markdown-container em {
+  font-style: italic;
+  color: #cbd5e1; /* Color gris para cursiva */
+}
+
+.markdown-container del {
+  text-decoration: line-through;
+  color: #f87171; /* Tachado en un rojo suave */
+}
+
+.markdown-container ul, 
+.markdown-container ol {
+  padding-left: 1.5em;
+  margin-bottom: 1.5em;
+  color: #d1d5db;
+}
+
+.markdown-container ul {
+  list-style-type: disc;
+}
+
+.markdown-container ol {
+  list-style-type: decimal;
+}
+
+.markdown-container li {
+  margin-bottom: 0.5em;
+}
+
+.markdown-container blockquote {
+  border-left: 3px solid #4b5563; /* Borde gris oscuro */
+  padding-left: 1em;
+  margin: 1.5em 0;
+  font-style: italic;
+  color: #9ca3af; /* Texto gris claro */
+}
+
+.markdown-container code {
+  border-radius: 4px;
+  font-family: 'Courier New', Courier, monospace;
+  
+}
+
+.markdown-container pre {
+   background-color: #282c34; /* Bloques de código en fondo oscuro */
+  color: #f3f4f6;
+  padding:3px;
+  padding-left:10px;
+  border-radius: 6px;
+  margin-bottom: 1.5em;
+  overflow-x: auto;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.markdown-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5em;
+}
+
+.markdown-container th, 
+.markdown-container td {
+  border: 1px solid #4b5563;
+  padding: 12px;
+  text-align: left;
+  color: #e5e7eb;
+}
+
+.markdown-container th {
+  background-color: #374151; /* Cabecera en gris oscuro */
+}
+
+.markdown-container tr:nth-child(even) {
+  background-color: #374151;
+}
+
+.markdown-container a {
+  color: #60a5fa; /* Enlaces en azul discreto */
+  text-decoration: none;
+}
+
+.markdown-container a:hover {
+  color: #3b82f6; /* Color más fuerte al pasar el cursor */
+  border-bottom: 1px solid #3b82f6;
+}
+
+

@@ -2,6 +2,8 @@ import { Message, messagesAtom } from "@/atoms/messageAtom";
 import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 import { orionXTalk } from "./utils/OrionX";
+import MarkdownViewer from "../MarkdownViewer";
+
 
 export default function OrionXChat() {
   const [messages, setMessages] = useAtom(messagesAtom);
@@ -51,7 +53,7 @@ export default function OrionXChat() {
             <p className="text-sm font-bold bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">{msg.sender}</p>
             <p>{formatTime(msg.date)}</p>
           </div>
-          <span className="text-base text-justify">{msg.text}</span>
+          <MarkdownViewer text={msg.text} />
         </div>
       ))}
     </div>
