@@ -97,7 +97,7 @@ export default function ButtonIA({ prompt }: ButtonIAProps) {
     };
 
     return (<>
-        {text && <div className="bg-gradient-to-r from-sky-600 to-blue-700  w-full h-fit p-2 rounded-xl text-white hover:scale-105 transition cursor-pointer" onClick={handleClick}>{text}</div>}
+        {text && <div className="bg-gradient-to-r from-sky-600 to-blue-700 w-[400px] h-fit p-2 rounded-xl text-white hover:scale-105 transition cursor-pointer" onClick={handleClick}>{text}</div>}
     </>
 
     )
