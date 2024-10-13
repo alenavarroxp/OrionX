@@ -1,20 +1,32 @@
 import { Message, messagesAtom } from "@/atoms/messageAtom";
 import { useAtom } from "jotai";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { orionXTalk } from "./utils/OrionX";
 import MarkdownViewer from "../MarkdownViewer";
 
-
 export default function OrionXChat() {
   const [messages, setMessages] = useAtom(messagesAtom);
-
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true); // Estado para rastrear si estamos al fondo
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      // Si estamos al fondo, desplazamos hacia abajo
+      if (isAtBottom) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
     }
-  }, [messages]);
+  }, [messages, isAtBottom]); // Agregar isAtBottom para controlar el desplazamiento
+
+  // Función para verificar si el usuario está al fondo
+  const handleScroll = () => {
+    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current || {};
+    if (scrollTop + clientHeight >= scrollHeight - 5) { // Un margen de 5px
+      setIsAtBottom(true);
+    } else {
+      setIsAtBottom(false);
+    }
+  };
 
   useEffect(() => {
     const initialMessage: Message = {
@@ -43,6 +55,7 @@ export default function OrionXChat() {
   return (
     <div
       ref={chatContainerRef}
+      onScroll={handleScroll} // Agregar el evento de desplazamiento
       className="text-white px-4 rounded-lg w-full h-full text-lg font-semibold overflow-y-auto"
       style={{ maxHeight: "80vh" }}
     >
