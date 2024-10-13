@@ -1,17 +1,17 @@
 # OrionX
 
-OrionX is a 3D virtual assistant that you can interact with in real-time, sending voice commands and receiving dynamic, lifelike responses. It offers a seamless and engaging conversational experience in an immersive environment.
+OrionX is a 3D virtual assistant that you can interact with in real-time, sending commands and receiving dynamic, lifelike responses. It offers a seamless and engaging conversational experience in an immersive environment.
 
 ## Features
 
 - **Real-time Interaction:** Engage with the virtual assistant using natural voice commands.
 - **Dynamic Responses:** Receive lifelike responses tailored to your queries.
 - **Immersive Experience:** Explore a 3D environment that enhances user engagement.
-- **Web Accessibility:** Access OrionX directly at [orionx.netlify.app](https://orionx.netlify.app).
+- **Web Accessibility:** Access OrionX directly at [orionxp.netlify.app](https://orionxp.netlify.app).
 
 ## Usage
 
-To use OrionX, simply navigate to [orionx.netlify.app](https://orionx.netlify.app) in your web browser. Once the application is loaded, you can interact with the virtual assistant by speaking commands. OrionX will respond dynamically based on your input, providing an engaging conversational experience.
+To use OrionX, simply navigate to [orionxp.netlify.app](https://orionxp.netlify.app) in your web browser. Once the application is loaded, you can interact with the virtual assistant by speaking commands. OrionX will respond dynamically based on your input, providing an engaging conversational experience.
 
 ## Contributing
 

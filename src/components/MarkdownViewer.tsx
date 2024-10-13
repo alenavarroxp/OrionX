@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import remarkGfm from 'remark-gfm';
 
-const PreBlock = ({ className, children }) => {
+const PreBlock = ({ className, children }: { className?: string, children: React.ReactNode }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [buttonText, setButtonText] = useState('Copia');
   const [isCopied, setIsCopied] = useState(false); // Estado para manejar si se copió el código
@@ -13,12 +13,12 @@ const PreBlock = ({ className, children }) => {
   // Función para copiar al portapapeles
   const handleCopy = () => {
     // Función recursiva para extraer texto de un componente React
-    const extractText = (node) => {
+    const extractText = (node: React.ReactNode): string => {
       if (typeof node === 'string') {
         return node;
       } else if (Array.isArray(node)) {
         return node.map(extractText).join('');
-      } else if (node && node.props && node.props.children) {
+      } else if (node && typeof node === 'object' && 'props' in node && node.props.children) {
         return extractText(node.props.children);
       } else {
         return '';
@@ -67,14 +67,14 @@ const PreBlock = ({ className, children }) => {
   );
 };
 
-const MarkdownViewer = ({ text }) => {
+const MarkdownViewer = ({ text }: { text: string }) => {
   return (
     <div className="markdown-container text-base text-pretty">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight]}
         components={{
-          pre: PreBlock // Usa el nuevo componente CodeBlock aquí
+          pre: ({ className, children, ...props }) => <PreBlock className={className} {...props}>{children}</PreBlock>
         }}
       >
         {text}

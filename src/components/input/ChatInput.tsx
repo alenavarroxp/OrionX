@@ -3,7 +3,7 @@ import { Message, messagesAtom } from "@/atoms/messageAtom";
 import { setAnimation } from "@/babylon/entity/assistant";
 import { destroyTalkDots, setTalkDots } from "@/babylon/interface/elements";
 import { useAtom } from "jotai";
-import { FileIcon, Mic, MicOff, Send, UploadIcon } from "lucide-react";
+import { FileIcon, Send, UploadIcon } from "lucide-react";
 import { useState } from "react";
 import { orionXTalk } from "../orionX/utils/OrionX";
 import { Button } from "../ui/button";
@@ -13,33 +13,7 @@ export default function ChatInput() {
   const [value, setValue] = useState("");
   const [messages, setMessages] = useAtom(messagesAtom);
   const [fileContent, setFileContent] = useState<{ name: string; text: string } | null>(null);
-  const [isListening, setIsListening] = useState(false); // Estado para controlar la grabación
-  const [isSending, setIsSending] = useState(false); // Nueva bandera para controlar el envío
-
-  // Verifica si la API de reconocimiento de voz está disponible
-  const SpeechRecognition =
-    window.SpeechRecognition || (window as any).webkitSpeechRecognition;
-
-  // Si la API no está disponible, muestra un mensaje en la consola
-  if (!SpeechRecognition) {
-    console.warn("SpeechRecognition API no está disponible en este navegador.");
-    return (
-      <div className="flex items-center w-full bg-gray-700 p-2 rounded-xl">
-        <Input
-          type="text"
-          placeholder="Write a message..."
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          className="flex-grow text-white border-0 placeholder:text-muted-foreground focus-visible:ring-offset-0 focus-visible:ring-0 overflow-x-auto whitespace-nowrap"
-        />
-      </div>
-    );
-  }
-
-  const recognition = new SpeechRecognition();
-  recognition.lang = "es-ES";
-  recognition.continuous = false;
-  recognition.interimResults = false;
+  const [isSending, setIsSending] = useState(false);
 
   const handleSend = async () => {
     if (value.trim() !== "" && !isSending) {
@@ -91,38 +65,13 @@ export default function ChatInput() {
       console.error("Error al obtener la respuesta de Gemini:", error);
       destroyTalkDots();
     } finally {
-      setIsSending(false); // Marcar como listo para otro envío
+      setIsSending(false);
     }
-  };
-
-  // Iniciar o detener reconocimiento de voz
-  const handleStartListening = () => {
-    setIsListening(true);
-    recognition.start();
-
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setValue(transcript); // Almacenar el texto transcrito en el input
-    };
-
-    recognition.onerror = (event) => {
-      console.error("Error en el reconocimiento de voz:", event.error);
-      setIsListening(false);
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-  };
-
-  const handleStopListening = () => {
-    recognition.stop();
-    setIsListening(false);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      event.preventDefault(); // Evita el salto de línea
+      event.preventDefault();
       handleSend();
     }
   };
@@ -143,16 +92,8 @@ export default function ChatInput() {
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
           className="flex-grow text-white border-0 placeholder:text-muted-foreground focus-visible:ring-offset-0 focus-visible:ring-0 overflow-x-auto whitespace-nowrap"
-          disabled={isSending} // Deshabilitar input durante el envío
+          disabled={isSending}
         />
-
-
-        <Button
-          onClick={isListening ? handleStopListening : handleStartListening}
-          className="bg-transparent hover:bg-gray-600 transition px-2 py-2 rounded-xl ml-2"
-        >
-          {isListening ? <Mic className="size-4" /> : <MicOff className="size-4" />}
-        </Button>
 
         <input
           type="file"
@@ -165,7 +106,6 @@ export default function ChatInput() {
         <label htmlFor="file-upload" className="ml-2 cursor-pointer bg-transparent hover:bg-gray-600 transition text-white py-2 px-2 rounded-xl flex items-center">
           <UploadIcon className="size-4" />
         </label>
-
 
         <Button
           onClick={handleSend}
