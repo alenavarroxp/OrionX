@@ -14,8 +14,7 @@ export default function ChatInput() {
   const [messages, setMessages] = useAtom(messagesAtom);
   const [fileContent, setFileContent] = useState<{ name: string; text: string } | null>(null);
   const [isListening, setIsListening] = useState(false); // Estado para controlar la grabación
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null); // Estado para manejar el timeout
-
+  const [isSending, setIsSending] = useState(false); // Nueva bandera para controlar el envío
 
   // Verifica si la API de reconocimiento de voz está disponible
   const SpeechRecognition =
@@ -43,7 +42,7 @@ export default function ChatInput() {
   recognition.interimResults = false;
 
   const handleSend = async () => {
-    if (value.trim() !== "") {
+    if (value.trim() !== "" && !isSending) {
       await sendMessage(value);
     }
   };
@@ -57,11 +56,11 @@ export default function ChatInput() {
   };
 
   const sendMessage = async (input: string) => {
+    setIsSending(true);
     setValue("");
     setTalkDots();
 
-    const chatHistory = messages.map((msg) => `${msg.sender}: ${msg.text}`).join("\n");
-    const prompt = `${chatHistory}\nUser: ${input} ${fileContent ? `\n${fileContent.name}: ${fileContent.text}` : ""}`;
+    const prompt = `\nUser: ${input} ${fileContent ? `\n${fileContent.name}: ${fileContent.text}` : ""}`;
 
     setFileContent(null);
 
@@ -70,7 +69,7 @@ export default function ChatInput() {
       setAnimation("Character|Audio_2");
       destroyTalkDots();
 
-      if (!response) return
+      if (!response) return;
 
       const newMessage: Message = {
         id: messages.length + 1,
@@ -91,6 +90,8 @@ export default function ChatInput() {
     } catch (error) {
       console.error("Error al obtener la respuesta de Gemini:", error);
       destroyTalkDots();
+    } finally {
+      setIsSending(false); // Marcar como listo para otro envío
     }
   };
 
@@ -102,30 +103,15 @@ export default function ChatInput() {
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       setValue(transcript); // Almacenar el texto transcrito en el input
-
-      // Reiniciar el timeout
-      if (timeoutId) {
-        clearTimeout(timeoutId); // Limpiar el timeout anterior
-      }
-      const newTimeoutId = setTimeout(() => {
-        handleStopListening(); // Detener el reconocimiento después de 1.5 segundos
-      }, 1500);
-      setTimeoutId(newTimeoutId);
     };
 
     recognition.onerror = (event) => {
       console.error("Error en el reconocimiento de voz:", event.error);
       setIsListening(false);
-      if (timeoutId) {
-        clearTimeout(timeoutId); // Limpiar el timeout en caso de error
-      }
     };
 
     recognition.onend = () => {
       setIsListening(false);
-      if (timeoutId) {
-        clearTimeout(timeoutId); // Limpiar el timeout cuando el reconocimiento termina
-      }
     };
   };
 
@@ -157,7 +143,16 @@ export default function ChatInput() {
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
           className="flex-grow text-white border-0 placeholder:text-muted-foreground focus-visible:ring-offset-0 focus-visible:ring-0 overflow-x-auto whitespace-nowrap"
+          disabled={isSending} // Deshabilitar input durante el envío
         />
+
+
+        <Button
+          onClick={isListening ? handleStopListening : handleStartListening}
+          className="bg-transparent hover:bg-gray-600 transition px-2 py-2 rounded-xl ml-2"
+        >
+          {isListening ? <Mic className="size-4" /> : <MicOff className="size-4" />}
+        </Button>
 
         <input
           type="file"
@@ -171,18 +166,11 @@ export default function ChatInput() {
           <UploadIcon className="size-4" />
         </label>
 
-        {/* Botón para captura de voz */}
-        <Button
-          onClick={isListening ? handleStopListening : handleStartListening}
-          className="bg-transparent hover:bg-gray-600 transition px-2 py-2 rounded-xl ml-2"
-        >
-          {isListening ? <Mic className="size-4" /> : <MicOff className="size-4" />}
-        </Button>
 
         <Button
           onClick={handleSend}
           className="bg-transparent hover:bg-gray-600 transition px-2 py-2 rounded-xl ml-2"
-          disabled={value.trim() === ""}
+          disabled={value.trim() === "" || isSending} // Deshabilitar botón de enviar durante el envío
         >
           <Send className="size-4" />
         </Button>
