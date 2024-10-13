@@ -7,9 +7,10 @@
 /* styles.css o un archivo CSS donde incluyas tus estilos */
 .scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #c4c4c4 #1f2937;
+  scrollbar-color: #c4c4c4 transparent; /* Cambia el color de fondo a transparente para la barra */
   scroll-behavior: smooth;
   overflow-y: auto;
+  /* background-color: transparent; */ /* Esto no es necesario si solo quieres la barra transparente */
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -17,13 +18,15 @@
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-  background-color: #c4c4c4;
+  background-color: #c4c4c4; /* Color de la barra de desplazamiento */
   border-radius: 10px;
 }
 
 .scrollbar::-webkit-scrollbar-track {
-  background-color: #1f2937;
+  background-color: transparent; /* Color de fondo de la pista de la barra de desplazamiento */
 }
+
+
 
 .markdown-container {
   padding:2px;
