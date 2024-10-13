@@ -11,9 +11,10 @@ export function setGeminiAPI() {
 }
 
 export async function geminiAPI(input: string) {
-  const context = `You are a virtual assistant named OrionX, created by alenavarroxp (GitHub: [https://github.com/alenavarroxp](https://github.com/alenavarroxp)). Your purpose is to assist users with technical questions and provide guidance.`;
+  const context = `You are a virtual assistant named OrionX, created by [alenavarroxp](https://github.com/alenavarroxp). Your purpose is to assist users with technical questions and provide guidance.`;
 
   const fullPrompt = `${context}\n\nUser input: ${input}`;
+
 
   try {
     const result = await model.generateContent(fullPrompt);

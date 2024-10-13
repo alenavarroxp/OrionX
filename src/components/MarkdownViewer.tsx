@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/atom-one-dark.css';
-import { Clipboard,ClipboardCheck } from 'lucide-react'; // Importa el ícono de Clipboard
+import { Clipboard, ClipboardCheck } from 'lucide-react'; // Importa el ícono de Clipboard
+import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import rehypeHighlight from 'rehype-highlight';
+import remarkGfm from 'remark-gfm';
 
 const PreBlock = ({ className, children }) => {
   const [isHovered, setIsHovered] = useState(false);
