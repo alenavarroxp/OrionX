@@ -7,7 +7,7 @@ export function setGeminiAPI() {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
   genAI = new GoogleGenerativeAI(apiKey);
-  model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 }
 
 export async function geminiAPI(input: string) {
